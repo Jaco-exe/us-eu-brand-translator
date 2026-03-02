@@ -12,16 +12,17 @@ export default async function handler(req, res) {
     }
 
     try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        // 3. Pointing to Mistral's server instead of OpenAI
+        const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${process.env.AI_API_KEY.trim()}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                model: "gpt-3.5-turbo",
+                model: "mistral-small-latest", // Fast, smart, and very cheap model
                 messages: [
-                    { role: "system", content: "You are a brand expert. Provide the European equivalent of the US brand mentioned. Keep it short." },
+                    { role: "system", content: "You are a helpful brand expert. The user will give you an American brand. Reply with the closest European equivalent and a 1-sentence explanation. Keep it concise." },
                     { role: "user", content: brand }
                 ],
             }),
@@ -29,12 +30,12 @@ export default async function handler(req, res) {
 
         const data = await response.json();
 
-        // 3. Safety check for OpenAI's response format
+        // 4. Extracting the answer (Mistral uses the exact same format as OpenAI!)
         if (data.choices && data.choices[0] && data.choices[0].message) {
             return res.status(200).json({ answer: data.choices[0].message.content });
         } else {
-            console.error("OpenAI Error:", data);
-            return res.status(500).json({ error: data.error?.message || 'AI returned an error.' });
+            console.error("Mistral Error:", data);
+            return res.status(500).json({ error: data.error?.message || 'Mistral returned an error.' });
         }
 
     } catch (error) {
