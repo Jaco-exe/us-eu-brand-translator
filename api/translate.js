@@ -1,3 +1,15 @@
+// Allow your website to talk to Vercel (CORS)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*'); // You can replace '*' with 'https://yourwebsite.com' for extra security
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
+    // Handle the pre-flight request
+    if (req.method === 'OPTIONS') {
+        res.status(200).end();
+        return;
+    }
+
 export default async function handler(req, res) {
     // 1. Safety check for the method
     if (req.method !== 'POST') {
