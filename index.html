@@ -1,0 +1,83 @@
+
+<div class="container">
+    <a href="index.html" class="back-link">← Back to Directory</a>
+    
+    <h2>AI Brand Translator</h2>
+    <p class="subtitle">Find the European equivalent of any American brand.</p>
+
+    <div class="api-tool-card">
+        <label for="brandInput">American Brand:</label>
+        <div class="search-row">
+            <input type="text" id="brandInput" placeholder="e.g., Target, Tylenol, CVS..." onkeypress="handleKeyPress(event)">
+            <button class="submit-btn" id="searchBtn" onclick="findBrand()">Translate 🌍</button>
+        </div>
+
+        <div id="loadingIndicator" class="loading-spinner" style="display: none;">
+            <div class="spinner"></div>
+            <p>Asking the AI...</p>
+        </div>
+
+        <div id="resultBox" class="result-box" style="display: none;">
+            <h3 id="resultTitle">European Equivalent:</h3>
+            <p id="resultText"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+
+// Allow users to press "Enter" to search
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        findBrand();
+    }
+}
+
+async function findBrand() {
+    const input = document.getElementById('brandInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const loading = document.getElementById('loadingIndicator');
+    const resultBox = document.getElementById('resultBox');
+    const resultText = document.getElementById('resultText');
+
+    const brandName = input.value.trim();
+    if (!brandName) return;
+
+    // 1. Update UI to "Loading" state
+    input.disabled = true;
+    searchBtn.disabled = true;
+    resultBox.style.display = 'none';
+    loading.style.display = 'block';
+
+    try {
+        // 2. Make the request to YOUR secure serverless proxy
+        // (We will build this backend in the next step!)
+        const response = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ brand: brandName })
+        });
+
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const data = await response.json();
+
+        // 3. Update UI with the AI's answer
+        resultText.innerText = data.answer;
+        resultBox.style.display = 'block';
+
+    } catch (error) {
+        console.error('Error:', error);
+        resultText.innerText = "Oops! The AI is taking a nap. Please try again later.";
+        resultBox.style.display = 'block';
+        resultBox.style.borderLeftColor = '#ed4245'; // Turn border red for error
+    } finally {
+        // 4. Reset UI
+        loading.style.display = 'none';
+        input.disabled = false;
+        searchBtn.disabled = false;
+        input.focus();
+    }
+}
+
+</script>
