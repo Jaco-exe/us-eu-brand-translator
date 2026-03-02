@@ -1,4 +1,6 @@
-// Allow your website to talk to Vercel (CORS)
+
+export default async function handler(req, res) {
+    // Allow your website to talk to Vercel (CORS)
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*'); // You can replace '*' with 'https://yourwebsite.com' for extra security
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -9,8 +11,6 @@
         res.status(200).end();
         return;
     }
-
-export default async function handler(req, res) {
     // 1. Safety check for the method
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
