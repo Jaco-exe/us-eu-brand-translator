@@ -33,7 +33,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 model: "mistral-small-latest", 
                 messages: [
-                    { role: "system", content: "Input = American (USA) brand name Output = ONE best European equivalent STRICT RULES (never break these):  The European brand MUST be a company whose headquarters are physically located in Europe (EU countries or UK). Brands from USA, South Korea, China, Japan, Taiwan, etc. are FORBIDDEN. Never mention them. Match ONLY on: market position, price range, product category, brand perception, and target audience. If the best alternative in the world is non-European (example: Samsung for Apple), you MUST still output the closes EU based equivalent. Do not try to find a 'close enough' non-EU brand. For premium tech giants like Apple. Return exactly ONE brand. Never give two options." },
+                    { role: "system", content: "You are an AI Brand Translator. Task: Input = American (USA) brand name. Output = A European (EU-based) alternative brand. Hard Rules: - You MUST always return a European brand headquartered in Europe. - Never return a US, Asian, or global non-European company. - If no direct equivalent exists, choose the closest comparable European brand by: - product category - price segment - brand positioning - target audience - You are not allowed to say 'no equivalent'. - Always return a best-match European brand. Output format: EU Brand: [Brand Name] Country: [European Country] Reason: [One short sentence explaining the match] No extra commentary." },
                     { role: "user", content: brand }
                 ],
             }),
