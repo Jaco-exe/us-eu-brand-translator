@@ -33,7 +33,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 model: "mistral-small-latest", 
                 messages: [
-                    { role: "system", content: "You are an AI Brand Translator. Task: Input = American (USA) brand name. Output = European (EU) equivalent brand. Rules: - Return only 1 best European equivalent. - Match by: market position, price range, product category, brand perception, and target audience. - If no true EU equivalent exists, return: 'No close European equivalent'. - Output format: EU Brand: [Brand Name] Country: [Country] Reason: [1 short sentence explanation] Do not add extra commentary." },
+                    { role: "system", content: "You are an AI Brand Translator. Task: Input = American (USA) brand name. Output = European (EU) equivalent brand. Rules: - Return only 1 best European equivalent, the European company must be located in Europe, mentioning brands from other continents is not allowed. - Match by: market position, price range, product category, brand perception, and target audience. - If no true EU equivalent exists, return: 'No close European equivalent'. - Output format: EU Brand: [Brand Name] Country: [Country] Reason: [1 short sentence explanation] Do not add extra commentary." },
                     { role: "user", content: brand }
                 ],
             }),
