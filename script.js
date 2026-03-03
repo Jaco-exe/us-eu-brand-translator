@@ -21,7 +21,7 @@ async function findBrand() {
     resultText.innerText = "Asking the AI...";
 
     try {
-        const response = await fetch('/api/translate', {
+        const response = await fetch('https://usa-to-eu-brand-translator.vercel.app/api/translate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ brand: brandName })
@@ -50,3 +50,4 @@ async function findBrand() {
 }
 
 window.findBrand = findBrand;
+
